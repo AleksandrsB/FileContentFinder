@@ -36,19 +36,30 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.listBoxResults = new System.Windows.Forms.ListBox();
             this.label4 = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
             this.txtFilter = new System.Windows.Forms.TextBox();
-            this.lbAuthor = new System.Windows.Forms.Label();
+            this.lblVersionInfo = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.lblProcessed = new System.Windows.Forms.Label();
+            this.treeViewResults = new System.Windows.Forms.TreeView();
+            this.splitContainerResults = new System.Windows.Forms.SplitContainer();
+            this.listBoxResults = new System.Windows.Forms.ListBox();
+            this.richTextBoxContents = new System.Windows.Forms.RichTextBox();
+            this.cbTreeView = new System.Windows.Forms.CheckBox();
+            this.bExpandAll = new System.Windows.Forms.Button();
+            this.bCollapseAll = new System.Windows.Forms.Button();
+            this.lblContents = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerResults)).BeginInit();
+            this.splitContainerResults.Panel1.SuspendLayout();
+            this.splitContainerResults.Panel2.SuspendLayout();
+            this.splitContainerResults.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnBrowse
             // 
             this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowse.Location = new System.Drawing.Point(273, 39);
+            this.btnBrowse.Location = new System.Drawing.Point(758, 39);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(95, 22);
             this.btnBrowse.TabIndex = 0;
@@ -62,7 +73,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDirectory.Location = new System.Drawing.Point(12, 39);
             this.txtDirectory.Name = "txtDirectory";
-            this.txtDirectory.Size = new System.Drawing.Size(255, 20);
+            this.txtDirectory.Size = new System.Drawing.Size(740, 20);
             this.txtDirectory.TabIndex = 1;
             // 
             // txtSearchText
@@ -72,13 +83,13 @@
             this.txtSearchText.Location = new System.Drawing.Point(12, 125);
             this.txtSearchText.Multiline = true;
             this.txtSearchText.Name = "txtSearchText";
-            this.txtSearchText.Size = new System.Drawing.Size(255, 85);
+            this.txtSearchText.Size = new System.Drawing.Size(740, 85);
             this.txtSearchText.TabIndex = 2;
             // 
             // btnSearch
             // 
             this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSearch.Location = new System.Drawing.Point(273, 125);
+            this.btnSearch.Location = new System.Drawing.Point(758, 125);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(95, 85);
             this.btnSearch.TabIndex = 3;
@@ -113,17 +124,6 @@
             this.label3.TabIndex = 9;
             this.label3.Text = "Text to find:";
             // 
-            // listBoxResults
-            // 
-            this.listBoxResults.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.listBoxResults.FormattingEnabled = true;
-            this.listBoxResults.Location = new System.Drawing.Point(12, 245);
-            this.listBoxResults.Name = "listBoxResults";
-            this.listBoxResults.Size = new System.Drawing.Size(356, 173);
-            this.listBoxResults.TabIndex = 10;
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -137,7 +137,7 @@
             // 
             this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(9, 428);
+            this.lblStatus.Location = new System.Drawing.Point(12, 544);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(54, 13);
             this.lblStatus.TabIndex = 12;
@@ -151,17 +151,17 @@
             this.txtFilter.TabIndex = 13;
             this.txtFilter.Text = "*cfg;*lua";
             // 
-            // lbAuthor
+            // lblVersionInfo
             // 
-            this.lbAuthor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbAuthor.AutoSize = true;
-            this.lbAuthor.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.lbAuthor.Location = new System.Drawing.Point(299, 428);
-            this.lbAuthor.Name = "lbAuthor";
-            this.lbAuthor.Size = new System.Drawing.Size(69, 13);
-            this.lbAuthor.TabIndex = 14;
-            this.lbAuthor.Text = "by Assembler";
-            this.lbAuthor.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblVersionInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblVersionInfo.AutoSize = true;
+            this.lblVersionInfo.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.lblVersionInfo.Location = new System.Drawing.Point(662, 544);
+            this.lblVersionInfo.Name = "lblVersionInfo";
+            this.lblVersionInfo.Size = new System.Drawing.Size(69, 13);
+            this.lblVersionInfo.TabIndex = 14;
+            this.lblVersionInfo.Text = "by Assembler";
+            this.lblVersionInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label5
             // 
@@ -176,24 +176,134 @@
             // 
             this.lblProcessed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblProcessed.AutoSize = true;
-            this.lblProcessed.Location = new System.Drawing.Point(148, 428);
+            this.lblProcessed.Location = new System.Drawing.Point(148, 544);
             this.lblProcessed.Name = "lblProcessed";
             this.lblProcessed.Size = new System.Drawing.Size(84, 13);
             this.lblProcessed.TabIndex = 16;
             this.lblProcessed.Text = "Files scanned: 0";
             // 
+            // treeViewResults
+            // 
+            this.treeViewResults.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeViewResults.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.treeViewResults.Location = new System.Drawing.Point(3, 1);
+            this.treeViewResults.Name = "treeViewResults";
+            this.treeViewResults.Size = new System.Drawing.Size(397, 291);
+            this.treeViewResults.TabIndex = 17;
+            this.treeViewResults.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewResults_AfterSelect);
+            this.treeViewResults.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewResults_NodeMouseClick);
+            // 
+            // splitContainerResults
+            // 
+            this.splitContainerResults.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainerResults.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.splitContainerResults.Location = new System.Drawing.Point(12, 248);
+            this.splitContainerResults.Name = "splitContainerResults";
+            // 
+            // splitContainerResults.Panel1
+            // 
+            this.splitContainerResults.Panel1.BackColor = System.Drawing.SystemColors.Window;
+            this.splitContainerResults.Panel1.Controls.Add(this.listBoxResults);
+            this.splitContainerResults.Panel1.Controls.Add(this.treeViewResults);
+            // 
+            // splitContainerResults.Panel2
+            // 
+            this.splitContainerResults.Panel2.BackColor = System.Drawing.SystemColors.Window;
+            this.splitContainerResults.Panel2.Controls.Add(this.richTextBoxContents);
+            this.splitContainerResults.Size = new System.Drawing.Size(841, 293);
+            this.splitContainerResults.SplitterDistance = 405;
+            this.splitContainerResults.TabIndex = 18;
+            this.splitContainerResults.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainerResults_SplitterMoved);
+            // 
+            // listBoxResults
+            // 
+            this.listBoxResults.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBoxResults.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listBoxResults.FormattingEnabled = true;
+            this.listBoxResults.Location = new System.Drawing.Point(7, 3);
+            this.listBoxResults.Name = "listBoxResults";
+            this.listBoxResults.Size = new System.Drawing.Size(393, 286);
+            this.listBoxResults.TabIndex = 18;
+            this.listBoxResults.SelectedIndexChanged += new System.EventHandler(this.listBoxResults_SelectedIndexChanged);
+            // 
+            // richTextBoxContents
+            // 
+            this.richTextBoxContents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.richTextBoxContents.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBoxContents.Location = new System.Drawing.Point(3, 3);
+            this.richTextBoxContents.Name = "richTextBoxContents";
+            this.richTextBoxContents.Size = new System.Drawing.Size(424, 285);
+            this.richTextBoxContents.TabIndex = 0;
+            this.richTextBoxContents.Text = "";
+            // 
+            // cbTreeView
+            // 
+            this.cbTreeView.AutoSize = true;
+            this.cbTreeView.Location = new System.Drawing.Point(63, 225);
+            this.cbTreeView.Name = "cbTreeView";
+            this.cbTreeView.Size = new System.Drawing.Size(74, 17);
+            this.cbTreeView.TabIndex = 19;
+            this.cbTreeView.Text = "Tree View";
+            this.cbTreeView.UseVisualStyleBackColor = true;
+            this.cbTreeView.CheckedChanged += new System.EventHandler(this.cbTreeView_CheckedChanged);
+            // 
+            // bExpandAll
+            // 
+            this.bExpandAll.Enabled = false;
+            this.bExpandAll.Location = new System.Drawing.Point(143, 221);
+            this.bExpandAll.Name = "bExpandAll";
+            this.bExpandAll.Size = new System.Drawing.Size(75, 23);
+            this.bExpandAll.TabIndex = 20;
+            this.bExpandAll.Text = "Expand all";
+            this.bExpandAll.UseVisualStyleBackColor = true;
+            this.bExpandAll.Visible = false;
+            this.bExpandAll.Click += new System.EventHandler(this.bExpandAll_Click);
+            // 
+            // bCollapseAll
+            // 
+            this.bCollapseAll.Enabled = false;
+            this.bCollapseAll.Location = new System.Drawing.Point(224, 221);
+            this.bCollapseAll.Name = "bCollapseAll";
+            this.bCollapseAll.Size = new System.Drawing.Size(75, 23);
+            this.bCollapseAll.TabIndex = 21;
+            this.bCollapseAll.Text = "Collapse all";
+            this.bCollapseAll.UseVisualStyleBackColor = true;
+            this.bCollapseAll.Visible = false;
+            this.bCollapseAll.Click += new System.EventHandler(this.bCollapseAll_Click);
+            // 
+            // lblContents
+            // 
+            this.lblContents.AutoSize = true;
+            this.lblContents.Location = new System.Drawing.Point(422, 226);
+            this.lblContents.Name = "lblContents";
+            this.lblContents.Size = new System.Drawing.Size(52, 13);
+            this.lblContents.TabIndex = 22;
+            this.lblContents.Text = "Contents:";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(383, 450);
+            this.ClientSize = new System.Drawing.Size(868, 566);
+            this.Controls.Add(this.lblContents);
+            this.Controls.Add(this.bCollapseAll);
+            this.Controls.Add(this.bExpandAll);
+            this.Controls.Add(this.cbTreeView);
+            this.Controls.Add(this.splitContainerResults);
             this.Controls.Add(this.lblProcessed);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.lbAuthor);
+            this.Controls.Add(this.lblVersionInfo);
             this.Controls.Add(this.txtFilter);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.listBoxResults);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -202,9 +312,13 @@
             this.Controls.Add(this.txtDirectory);
             this.Controls.Add(this.btnBrowse);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimizeBox = false;
             this.Name = "MainForm";
             this.Text = "Files Content Finder";
+            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.splitContainerResults.Panel1.ResumeLayout(false);
+            this.splitContainerResults.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerResults)).EndInit();
+            this.splitContainerResults.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -219,13 +333,20 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ListBox listBoxResults;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.TextBox txtFilter;
-        private System.Windows.Forms.Label lbAuthor;
+        private System.Windows.Forms.Label lblVersionInfo;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lblProcessed;
+        private System.Windows.Forms.TreeView treeViewResults;
+        private System.Windows.Forms.SplitContainer splitContainerResults;
+        private System.Windows.Forms.RichTextBox richTextBoxContents;
+        private System.Windows.Forms.CheckBox cbTreeView;
+        private System.Windows.Forms.Button bExpandAll;
+        private System.Windows.Forms.Button bCollapseAll;
+        private System.Windows.Forms.ListBox listBoxResults;
+        private System.Windows.Forms.Label lblContents;
     }
 }
 
