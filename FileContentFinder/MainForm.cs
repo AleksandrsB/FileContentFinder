@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -70,7 +71,7 @@ namespace FileContentFinder
             else if (listBoxResults.SelectedItem != null)
                 filePath = listBoxResults.SelectedItem.ToString();
 
-            if (!string.IsNullOrEmpty(filePath) && Directory.Exists(filePath))
+            if (!string.IsNullOrEmpty(filePath))
             {
                 try
                 {
@@ -81,7 +82,7 @@ namespace FileContentFinder
                     MessageBox.Show($"Error opening file: {ex.Message}");
                 }
             }
-            else MessageBox.Show($"Error opening file: Directory {filePath} do not exists!");
+            else MessageBox.Show($"Error opening file: name is empty!");
         }
 
         /// <summary>
@@ -133,8 +134,10 @@ namespace FileContentFinder
         /// </summary>
         private string GetFullPathFromNode(TreeNode node)
         {
-            // node.FullPath returns the path relative to the TreeView root.
-            return Path.Combine(baseDirectory, node.FullPath);
+            string pattern = @"^(?:[A-Za-z]:|[^\\]+)";
+            string fullPath = baseDirectory + Regex.Replace(node.FullPath, pattern, "");
+
+            return fullPath;
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
