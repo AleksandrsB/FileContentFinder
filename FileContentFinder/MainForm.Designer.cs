@@ -49,7 +49,9 @@
             this.cbTreeView = new System.Windows.Forms.CheckBox();
             this.bExpandAll = new System.Windows.Forms.Button();
             this.bCollapseAll = new System.Windows.Forms.Button();
-            this.lblContents = new System.Windows.Forms.Label();
+            this.bFindNext = new System.Windows.Forms.Button();
+            this.bFindPrev = new System.Windows.Forms.Button();
+            this.lblFoundInFile = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerResults)).BeginInit();
             this.splitContainerResults.Panel1.SuspendLayout();
             this.splitContainerResults.Panel2.SuspendLayout();
@@ -279,21 +281,47 @@
             this.bCollapseAll.Visible = false;
             this.bCollapseAll.Click += new System.EventHandler(this.bCollapseAll_Click);
             // 
-            // lblContents
+            // bFindNext
             // 
-            this.lblContents.AutoSize = true;
-            this.lblContents.Location = new System.Drawing.Point(422, 226);
-            this.lblContents.Name = "lblContents";
-            this.lblContents.Size = new System.Drawing.Size(52, 13);
-            this.lblContents.TabIndex = 22;
-            this.lblContents.Text = "Contents:";
+            this.bFindNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bFindNext.Location = new System.Drawing.Point(778, 221);
+            this.bFindNext.Name = "bFindNext";
+            this.bFindNext.Size = new System.Drawing.Size(75, 23);
+            this.bFindNext.TabIndex = 23;
+            this.bFindNext.Text = "Find Next";
+            this.bFindNext.UseVisualStyleBackColor = true;
+            this.bFindNext.Visible = false;
+            this.bFindNext.Click += new System.EventHandler(this.bFindNext_Click);
+            // 
+            // bFindPrev
+            // 
+            this.bFindPrev.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bFindPrev.Location = new System.Drawing.Point(697, 221);
+            this.bFindPrev.Name = "bFindPrev";
+            this.bFindPrev.Size = new System.Drawing.Size(75, 23);
+            this.bFindPrev.TabIndex = 24;
+            this.bFindPrev.Text = "Find Prev";
+            this.bFindPrev.UseVisualStyleBackColor = true;
+            this.bFindPrev.Visible = false;
+            this.bFindPrev.Click += new System.EventHandler(this.bFindPrev_Click);
+            // 
+            // lblFoundInFile
+            // 
+            this.lblFoundInFile.AutoSize = true;
+            this.lblFoundInFile.Location = new System.Drawing.Point(422, 226);
+            this.lblFoundInFile.Name = "lblFoundInFile";
+            this.lblFoundInFile.Size = new System.Drawing.Size(120, 13);
+            this.lblFoundInFile.TabIndex = 25;
+            this.lblFoundInFile.Text = "Matches found in File: 0";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(868, 566);
-            this.Controls.Add(this.lblContents);
+            this.Controls.Add(this.lblFoundInFile);
+            this.Controls.Add(this.bFindPrev);
+            this.Controls.Add(this.bFindNext);
             this.Controls.Add(this.bCollapseAll);
             this.Controls.Add(this.bExpandAll);
             this.Controls.Add(this.cbTreeView);
@@ -346,7 +374,9 @@
         private System.Windows.Forms.Button bExpandAll;
         private System.Windows.Forms.Button bCollapseAll;
         private System.Windows.Forms.ListBox listBoxResults;
-        private System.Windows.Forms.Label lblContents;
+        private System.Windows.Forms.Button bFindNext;
+        private System.Windows.Forms.Button bFindPrev;
+        private System.Windows.Forms.Label lblFoundInFile;
     }
 }
 

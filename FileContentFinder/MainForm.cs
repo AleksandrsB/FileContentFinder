@@ -21,12 +21,16 @@ namespace FileContentFinder
         // Stores the search text for highlighting matching lines in the file content
         private string lastSearchText;
 
+        // List of starting indices for all occurrences of the search text.
+        private List<int> matchIndices = new List<int>();
+        // The current match index in the list of occurrences.
+        private int currentMatchIndex = -1;
+
         public MainForm()
         {
             InitializeComponent();
             InitializeContextMenu();
             treeViewResults.Visible = false; // initially listBox is default
-
         }
 
         /// <summary>
@@ -56,6 +60,86 @@ namespace FileContentFinder
             {
                 treeViewResults.SelectedNode = e.Node;
             }
+        }
+        // When a node is selected in the TreeView (left click), display file content
+        private void treeViewResults_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (e.Node != null && e.Node.Tag != null)
+            {
+                string filePath = e.Node.Tag.ToString();
+                try
+                {
+                    // Read the entire content of the file
+                    string content = File.ReadAllText(filePath);
+                    // Clear the RichTextBox and set the file content
+                    richTextBoxContents.Clear();
+                    richTextBoxContents.Text = content;
+                    // Highlight all occurrences of the search text in the RichTextBox
+                    HighlightSearchText(richTextBoxContents, lastSearchText);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error reading file: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Highlights all occurrences of searchText in the provided RichTextBox.
+        /// Uses SelectionBackColor to apply a highlight color.
+        /// </summary>
+        private void HighlightSearchText(RichTextBox rtb, string searchText)
+        {
+            // Clear any previous match information.
+            matchIndices.Clear();
+            currentMatchIndex = -1;
+
+            if (string.IsNullOrEmpty(searchText))
+                return;
+
+            int startIndex = 0;
+            // Reset selection to ensure the entire text is unformatted initially.
+            rtb.SelectionStart = 0;
+            rtb.SelectionLength = 0;
+
+            // Loop through the text and find each occurrence of the search text.
+            while (startIndex < rtb.TextLength)
+            {
+                // Use Find() method with case-insensitive search (omit MatchCase flag for case-insensitive)
+                int wordStartIndex = rtb.Find(searchText, startIndex, RichTextBoxFinds.None);
+                if (wordStartIndex != -1)
+                {
+                    matchIndices.Add(wordStartIndex);
+                    // Select the found text
+                    rtb.Select(wordStartIndex, searchText.Length);
+                    // Apply the highlight color
+                    rtb.SelectionBackColor = Color.GreenYellow;
+                    // Move startIndex beyond the current found instance
+                    startIndex = wordStartIndex + searchText.Length;
+                }
+                else break;
+            }
+            // Reset selection to the beginning.
+            rtb.SelectionStart = 0;
+            rtb.SelectionLength = 0;
+
+            // if any matches were found, set the first one as current.
+            if (matchIndices.Count > 0)
+            {
+                currentMatchIndex = 0;
+                rtb.Select(matchIndices[currentMatchIndex], searchText.Length);
+                rtb.SelectionBackColor = Color.Orange; // Highlight current match
+                rtb.SelectionStart = 0;
+                rtb.SelectionLength = 0;
+                bFindNext.Visible = true;
+                bFindPrev.Visible = true;
+            }
+
+            // Update the label with match count and current index.
+            lblFoundInFile.Text = matchIndices.Count > 0
+                ? $"Matches found in File: {matchIndices.Count} (Current: {currentMatchIndex + 1})"
+                : "No matches found";
+
         }
 
         /// <summary>
@@ -185,6 +269,9 @@ namespace FileContentFinder
             btnSearch.Enabled = false;
             lblStatus.Text = "Searching...";
             lblProcessed.Text = "Files scanned: 0";
+            lblFoundInFile.Text = "Matches found in File: 0";
+            bFindNext.Visible = false;
+            bFindPrev.Visible = false;
 
             // Create a progress reporter to update the label for processed files
             var progress = new Progress<int>(count =>
@@ -269,9 +356,9 @@ namespace FileContentFinder
 
             foreach (string file in foundFiles)
             {
-                // Get the relative path of the file from the base directory.
+                // Get the relative path of the file from the base directory
                 string relativePath = GetRelativePath(baseDirectory, file);
-                // Split the relative path into parts (folders and the file name).
+                // Split the relative path into parts (folders and the file name)
                 string[] parts = relativePath.Split(Path.DirectorySeparatorChar);
 
                 TreeNodeCollection currentNodes = treeViewResults.Nodes;
@@ -344,62 +431,8 @@ namespace FileContentFinder
                 }
             }
         }
-        // When a node is selected in the TreeView (left click), display file content
-        private void treeViewResults_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            if (e.Node != null && e.Node.Tag != null)
-            {
-                string filePath = e.Node.Tag.ToString();
-                try
-                {
-                    // Read the entire content of the file
-                    string content = File.ReadAllText(filePath);
-                    // Clear the RichTextBox and set the file content
-                    richTextBoxContents.Clear();
-                    richTextBoxContents.Text = content;
-                    // Highlight all occurrences of the search text in the RichTextBox
-                    HighlightSearchText(richTextBoxContents, lastSearchText);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error reading file: {ex.Message}");
-                }
-            }
-        }
-        /// <summary>
-        /// Highlights all occurrences of searchText in the provided RichTextBox.
-        /// Uses SelectionBackColor to apply a highlight color.
-        /// </summary>
-        private void HighlightSearchText(RichTextBox rtb, string searchText)
-        {
-            if (string.IsNullOrEmpty(searchText))
-                return;
-
-            int startIndex = 0;
-            // Reset selection to ensure the entire text is unformatted initially.
-            rtb.SelectionStart = 0;
-            rtb.SelectionLength = 0;
-
-            // Loop through the text and find each occurrence of the search text.
-            while (startIndex < rtb.TextLength)
-            {
-                // Use Find() method with case-insensitive search (omit MatchCase flag for case-insensitive)
-                int wordStartIndex = rtb.Find(searchText, startIndex, RichTextBoxFinds.None);
-                if (wordStartIndex != -1)
-                {
-                    // Select the found text.
-                    rtb.Select(wordStartIndex, searchText.Length);
-                    // Apply the highlight color (LightYellow).
-                    rtb.SelectionBackColor = Color.GreenYellow;
-                    // Move startIndex beyond the current found instance.
-                    startIndex = wordStartIndex + searchText.Length;
-                }
-                else break;
-            }
-            // Reset selection to the beginning.
-            rtb.SelectionStart = 0;
-            rtb.SelectionLength = 0;
-        }
+        
+        
 
         private void cbTreeView_CheckedChanged(object sender, EventArgs e)
         {
@@ -439,7 +472,65 @@ namespace FileContentFinder
 
         private void splitContainerResults_SplitterMoved(object sender, SplitterEventArgs e)
         {
-            lblContents.Left = e.SplitX+20;
+            lblFoundInFile.Left = e.SplitX+20;
+        }
+
+        /// <summary>
+        /// Event handler for the "Next" button.
+        /// Navigates to the next occurrence of the search text.
+        /// </summary>
+        private void bFindNext_Click(object sender, EventArgs e)
+        {
+            if (matchIndices.Count == 0)
+                return;
+
+            // Revert the current match highlight back to the base color.
+            richTextBoxContents.Select(matchIndices[currentMatchIndex], lastSearchText.Length);
+            richTextBoxContents.SelectionBackColor = Color.GreenYellow;
+
+            // Move to the next match; wrap around if at the end.
+            currentMatchIndex++;
+            if (currentMatchIndex >= matchIndices.Count)
+                currentMatchIndex = 0;
+
+            // Highlight the new current match with a distinct color.
+            richTextBoxContents.Select(matchIndices[currentMatchIndex], lastSearchText.Length);
+            richTextBoxContents.SelectionBackColor = Color.Orange;
+            richTextBoxContents.ScrollToCaret();
+            richTextBoxContents.SelectionStart = 0;
+            richTextBoxContents.SelectionLength = 0;
+
+            // Update label with current match info.
+            lblFoundInFile.Text = $"Matches found in File: {matchIndices.Count} (Current: {currentMatchIndex + 1})";
+        }
+
+        /// <summary>
+        /// Event handler for the "Previous" button.
+        /// Navigates to the previous occurrence of the search text.
+        /// </summary>
+        private void bFindPrev_Click(object sender, EventArgs e)
+        {
+            if (matchIndices.Count == 0)
+                return;
+
+            // Revert the current match highlight back to the base color.
+            richTextBoxContents.Select(matchIndices[currentMatchIndex], lastSearchText.Length);
+            richTextBoxContents.SelectionBackColor = Color.GreenYellow;
+
+            // Move to the previous match; wrap around if at the beginning.
+            currentMatchIndex--;
+            if (currentMatchIndex < 0)
+                currentMatchIndex = matchIndices.Count - 1;
+
+            // Highlight the new current match with a distinct color.
+            richTextBoxContents.Select(matchIndices[currentMatchIndex], lastSearchText.Length);
+            richTextBoxContents.SelectionBackColor = Color.Orange;
+            richTextBoxContents.ScrollToCaret();
+            richTextBoxContents.SelectionStart = 0;
+            richTextBoxContents.SelectionLength = 0;
+
+            // Update label with current match info.
+            lblFoundInFile.Text = $"Matches found in File: {matchIndices.Count} (Current: {currentMatchIndex + 1})";
         }
     }
 }
