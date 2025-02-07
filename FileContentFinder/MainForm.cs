@@ -198,7 +198,7 @@ namespace FileContentFinder
             // Build the TreeView to group results by folder structure.
             BuildTreeView(foundFiles, directory);
             listBoxResults.Items.AddRange(foundFiles.ToArray());
-
+            
             bExpandAll.Enabled = true;
             bCollapseAll.Enabled = true;
             btnSearch.Enabled = true;
@@ -413,7 +413,11 @@ namespace FileContentFinder
 
         private void bExpandAll_Click(object sender, EventArgs e)
         {
+            if(treeViewResults.Nodes.Count== 0) return;
+
             treeViewResults.ExpandAll();
+            treeViewResults.SelectedNode = treeViewResults.Nodes[0];
+            treeViewResults.Select();
         }
 
         private void bCollapseAll_Click(object sender, EventArgs e)
